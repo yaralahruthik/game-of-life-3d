@@ -59,7 +59,7 @@ const Grid = ({ width, height, depth, rules, running }) => {
 
 const generateInitialGrid = (width, height, depth) => {
   const grid = new Array(width * height * depth).fill(0);
-  return grid.map(() => (Math.random() > 0.5 ? 1 : 0));
+  return grid;
 };
 
 const indexToPosition = (index, width, height, depth, spacing) => {
