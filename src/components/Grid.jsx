@@ -8,7 +8,7 @@ const Grid = ({ width, height, depth, rules, running }) => {
     generateInitialGrid(width, height, depth),
   );
 
-  const spacing = 1.5;
+  const spacing = 2;
 
   const step = useCallback(() => {
     setGrid((prevGrid) => applyRules(prevGrid, width, height, depth, rules));
