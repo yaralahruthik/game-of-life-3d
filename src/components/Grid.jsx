@@ -3,19 +3,34 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import Cell from './Cell';
 
-const Grid = ({ width, height, depth, rules }) => {
+const Grid = ({ width, height, depth, rules, running }) => {
   const [grid, setGrid] = useState(() =>
     generateInitialGrid(width, height, depth),
   );
+
+  const spacing = 1.5;
 
   const step = useCallback(() => {
     setGrid((prevGrid) => applyRules(prevGrid, width, height, depth, rules));
   }, [width, height, depth, rules]);
 
   useEffect(() => {
-    const intervalId = setInterval(step, 100);
+    if (!running) {
+      return;
+    }
+    const intervalId = setInterval(step, 500);
     return () => clearInterval(intervalId);
-  }, [step]);
+  }, [step, running]);
+
+  const toggleCellState = (index) => {
+    if (running) return;
+
+    setGrid((prevGrid) => {
+      const newGrid = [...prevGrid];
+      newGrid[index] = newGrid[index] === 0 ? 1 : 0;
+      return newGrid;
+    });
+  };
 
   return (
     <Canvas>
@@ -31,8 +46,9 @@ const Grid = ({ width, height, depth, rules }) => {
         {grid.map((cell, index) => (
           <Cell
             key={index}
-            position={indexToPosition(index, width, height, depth)}
+            position={indexToPosition(index, width, height, depth, spacing)}
             color={cell === 1 ? 'orange' : 'gray'}
+            onClick={() => toggleCellState(index)}
           />
         ))}
       </group>
@@ -46,12 +62,16 @@ const generateInitialGrid = (width, height, depth) => {
   return grid.map(() => (Math.random() > 0.5 ? 1 : 0));
 };
 
-const indexToPosition = (index, width, height, depth) => {
-  const x = index % width;
-  const y = Math.floor(index / (width * depth)) % height;
-  const z = Math.floor(index / width) % depth;
+const indexToPosition = (index, width, height, depth, spacing) => {
+  const x = (index % width) * spacing;
+  const y = (Math.floor(index / (width * depth)) % height) * spacing;
+  const z = (Math.floor(index / width) % depth) * spacing;
 
-  return [x - width / 2, y - height / 2, z - depth / 2];
+  return [
+    x - (width / 2) * spacing,
+    y - (height / 2) * spacing,
+    z - (depth / 2) * spacing,
+  ];
 };
 
 const applyRules = (grid, width, height, depth, rules) => {

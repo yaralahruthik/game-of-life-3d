@@ -1,4 +1,4 @@
-const Controls = ({ onStart, onPause, onReset }) => {
+const Controls = ({ onStart, onPause }) => {
   return (
     <div className="mt-4 flex justify-center space-x-4">
       <button
@@ -12,12 +12,6 @@ const Controls = ({ onStart, onPause, onReset }) => {
         onClick={onPause}
       >
         Pause
-      </button>
-      <button
-        className="rounded bg-red-500 px-4 py-2 text-white"
-        onClick={onReset}
-      >
-        Reset
       </button>
     </div>
   );
