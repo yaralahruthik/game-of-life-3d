@@ -12,7 +12,7 @@
 
 ## Installation
 
-1. Clone the repository: git clone https://github.com/yourusername/3d-game-of-life.git
+1. Clone the repository
 2. Navigate to the project directory: cd 3d-game-of-life
 3. Install the dependencies: npm install
 4. Start the development server: npm run dev
